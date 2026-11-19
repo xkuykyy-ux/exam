@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>purbaya_edu — Platform Edukasi & Agronomi Kebun</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#064e3b',
+              primary: '#047857',
+              emerald: '#10b981',
+              light: '#ecfdf5',
+              amber: '#f59e0b',
+              amberDark: '#d97706',
+              earth: '#78350f',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style id="pixel-3d-theme">
+    :root { --pixel-green:#176b45; --pixel-dark:#123d2c; --pixel-lime:#a3e635; --pixel-gold:#fbbf24; }
+    body { background-color:#f1f8ed !important; background-image:radial-gradient(#b7d7b0 1px,transparent 1px); background-size:18px 18px; }
+    header { border-bottom:4px solid var(--pixel-dark) !important; box-shadow:0 5px 0 #b7d7b0,0 10px 22px #123d2c18 !important; }
+    .rounded-2xl,.rounded-3xl,.rounded-xl { border-radius:12px !important; }
+    button,a[href^="#"] { transition:transform .2s ease,box-shadow .2s ease,filter .2s ease; }
+    button:hover,a[href^="#"]:hover { transform:translateY(-3px); filter:saturate(1.12); }
+    .shadow-sm,.shadow-md,.shadow-lg,.shadow-xl,.shadow-2xl { box-shadow:5px 5px 0 #123d2c25, 0 12px 24px #123d2c12 !important; }
+    #beranda { background-image:linear-gradient(135deg,#123d2c 0%,#176b45 55%,#248b58 100%) !important; }
+    #beranda .rounded-2xl, #sop .rounded-3xl, #konsultasi .rounded-3xl { border:2px solid #ffffff35; box-shadow:6px 6px 0 #092d20a8 !important; }
+    #plants-grid > * { border:2px solid #b7d7b0; box-shadow:6px 6px 0 #176b4525,0 12px 24px #123d2c12; transition:transform .22s ease,box-shadow .22s ease; }
+    #plants-grid > *:hover { transform:translateY(-6px) rotate(-.3deg); box-shadow:9px 10px 0 #176b4530; }
+    .pixel-label { display:inline-block; padding:5px 9px; border:2px solid #123d2c; background:#d9f99d; color:#123d2c; font-weight:800; letter-spacing:.04em; box-shadow:3px 3px 0 #123d2c; }
+    .pixel-3d-title { text-shadow:2px 2px 0 #123d2c,4px 4px 0 #0b291d; }
+    footer { border-top:4px solid #a3e635 !important; }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { transition:none !important; animation:none !important; } }
+  </style>
+
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+  <!-- Toast Notification (Pengganti alert()) -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transform transition-all duration-300 translate-y-4 opacity-0">
+    <div class="bg-emerald-950 text-white px-5 py-3.5 rounded-2xl shadow-xl border border-emerald-700 flex items-center gap-3">
+      <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+      <span id="toast-message" class="text-sm font-medium">Pesan notifikasi</span>
+    </div>
+  </div>
+
+  <!-- 1. HEADER & NAVIGASI -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- Logo & Judul -->
+        <a href="#beranda" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-900 to-emerald-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-seedling text-xl text-amber-300"></i>
+          </div>
+          <div>
+            <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-emerald-950">
+              purbaya<span class="text-emerald-600">_edu</span>
+            </span>
+            <p class="text-[11px] font-medium text-slate-500 -mt-1 hidden sm:block">Agribisnis &amp; Smart Farming</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="#beranda" class="text-sm font-semibold text-slate-700 hover:text-emerald-700 transition-colors">Beranda</a>
+          <a href="#katalog" class="text-sm font-semibold text-slate-700 hover:text-emerald-700 transition-colors">Katalog Tanaman</a>
+          <a href="#sop" class="text-sm font-semibold text-slate-700 hover:text-emerald-700 transition-colors">SOP Perawatan</a>
+          <a href="#konsultasi" class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm transition-all">
+            <i class="fa-solid fa-location-dot text-lg text-amber-300"></i>
+            Lihat Alamat
+          </a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" aria-label="Buka Menu" class="md:hidden p-3 rounded-xl text-emerald-900 hover:bg-emerald-50 focus:outline-none">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-emerald-100 px-4 pt-3 pb-5 space-y-2 shadow-lg">
+      <a href="#beranda" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">Beranda</a>
+      <a href="#katalog" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">Katalog Tanaman</a>
+      <a href="#sop" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800">SOP Perawatan</a>
+      <a href="#konsultasi" class="mobile-link flex items-center justify-center gap-2 bg-emerald-700 text-white px-4 py-3 rounded-xl text-base font-semibold mt-2">
+        <i class="fa-solid fa-location-dot text-lg text-amber-300"></i>
+        Lihat Alamat
+      </a>
+    </div>
+  </header>
+
+  <!-- 2. HERO SECTION AGRIBISNIS -->
+  <section id="beranda" class="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-800 text-white py-16 sm:py-24">
+    <!-- Decorative Background Pattern -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none">
+      <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-amber-400 blur-3xl"></div>
+      <div class="absolute bottom-0 left-10 w-80 h-80 rounded-full bg-emerald-400 blur-3xl"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Hero Left Text -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-900/80 border border-emerald-600/50 text-amber-300 text-xs sm:text-sm font-semibold tracking-wide">
+            <i class="fa-solid fa-leaf"></i>
+            <span>PLATFORM EDUKASI AGRONOMI &amp; HORTIKULTURA MODERN</span>
+          </div>
+
+          <h1 class="pixel-3d-title text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+            Budidaya Cerdas &amp; Perawatan Presisi untuk <span class="text-amber-400">Panen Optimal</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-emerald-100/90 leading-relaxed max-w-2xl">
+            Selamat datang di <strong class="text-white">purbaya_edu</strong>. Pelajari panduan praktis identifikasi varietas, diagnosa kondisi lapangan, serta standar perawatan harian 10 komoditas hortikultura unggulan berbasis observasi kebun nyata.
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-2">
+            <a href="#katalog" class="inline-flex items-center justify-center gap-2.5 bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold px-7 py-4 rounded-2xl shadow-lg shadow-amber-500/20 transition-all text-base">
+              <span>Jelajahi Katalog Tanaman</span>
+              <i class="fa-solid fa-arrow-down"></i>
+            </a>
+            <a href="#konsultasi" class="inline-flex items-center justify-center gap-2.5 bg-emerald-800/70 hover:bg-emerald-800 text-white border border-emerald-600 font-semibold px-7 py-4 rounded-2xl transition-all text-base">
+              <i class="fa-solid fa-location-dot text-xl text-emerald-300"></i>
+              <span>Tanya Penyuluh Kebun</span>
+            </a>
+          </div>
+
+          <!-- Statistik Singkat -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-emerald-700/60">
+            <div class="bg-emerald-950/40 p-4 rounded-2xl border border-emerald-700/40">
+              <p class="text-2xl sm:text-3xl font-extrabold text-amber-400">10</p>
+              <p class="text-xs sm:text-sm text-emerald-100 font-medium mt-1">Dokumentasi Lapangan</p>
+            </div>
+            <div class="bg-emerald-950/40 p-4 rounded-2xl border border-emerald-700/40">
+              <p class="text-2xl sm:text-3xl font-extrabold text-emerald-300">9</p>
+              <p class="text-xs sm:text-sm text-emerald-100 font-medium mt-1">Komoditas Unggulan</p>
+            </div>
+            <div class="bg-emerald-950/40 p-4 rounded-2xl border border-emerald-700/40">
+              <p class="text-2xl sm:text-3xl font-extrabold text-amber-400">100%</p>
+              <p class="text-xs sm:text-sm text-emerald-100 font-medium mt-1">Panduan Praktis</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right Visual Card -->
+        <div class="lg:col-span-5">
+          <div class="bg-white/10 backdrop-blur-md p-4 sm:p-5 rounded-3xl border border-white/15 shadow-2xl">
+            <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-emerald-900">
+              <img
+                src="https://i.imgur.com/TR5sLnJ.jpeg"
+                onerror="this.src='https://placehold.co/800x600/064e3b/ffffff?text=purbaya_edu+Smart+Farming'"
+                alt="Kebun Hortikultura Modern purbaya_edu"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-transparent to-transparent"></div>
+              <div class="absolute bottom-4 left-4 right-4 text-white">
+                <span class="inline-block px-3 py-1 rounded-lg bg-amber-500 text-emerald-950 text-xs font-bold mb-1.5">
+                  HASIL VALIDASI LAPANGAN
+                </span>
+                <p class="text-sm sm:text-base font-bold">10 Sampel Tanaman Terverifikasi</p>
+                <p class="text-xs text-emerald-200 mt-0.5">Lengkap dengan koreksi varietas cabai &amp; diagnosa hama daun.</p>
+              </div>
+            </div>
+
+            <!-- Info Koreksi Data -->
+            <div class="mt-4 bg-emerald-950/70 rounded-2xl p-4 border border-emerald-700/50 flex items-start gap-3">
+              <i class="fa-solid fa-clipboard-check text-amber-400 text-lg mt-0.5"></i>
+              <div class="text-xs sm:text-sm text-emerald-100 leading-relaxed">
+                <strong class="text-white">Pembaruan Data Agronomi:</strong> Seluruh 10 foto observasi telah diklasifikasikan secara akurat (termasuk pemisahan 2 varietas Cabai Rawit, Bunga Matahari refugia, serta Kembang Kol polybag).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. KATALOG TANAMAN INTERAKTIF -->
+  <section id="katalog" class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="inline-block px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold tracking-wider uppercase mb-3">
+        Database Observasi Kebun
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-emerald-950 tracking-tight">
+        Katalog 10 Komoditas Hortikultura
+      </h2>
+      <p class="text-slate-600 mt-3 text-base sm:text-lg">
+        Pilih kategori atau cari nama tanaman untuk mempelajari kondisi lapangan, media tanam, estimasi panen, dan teknik perawatannya.
+      </p>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/80 mb-10 space-y-5">
+      <!-- Kolom Pencarian -->
+      <div class="relative max-w-xl mx-auto">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Cari nama tanaman atau nama ilmiah (misal: Terong, Cabai, Solanum)..."
+          class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-sm sm:text-base text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
+        />
+        <button id="clear-search" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1.5" title="Hapus pencarian">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Tombol Filter Kategori -->
+      <div id="category-filters" class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+        <button data-category="Semua" class="filter-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-800 text-white shadow-sm transition-all">
+          Semua (10)
+        </button>
+        <button data-category="Buah & Sayur Solanaceae" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 transition-all">
+          Buah &amp; Sayur Solanaceae
+        </button>
+        <button data-category="Buah Tahunan" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 transition-all">
+          Buah Tahunan
+        </button>
+        <button data-category="Pangan & Biji-bijian" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 transition-all">
+          Pangan &amp; Biji-bijian
+        </button>
+        <button data-category="Merambat & Refugia" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 transition-all">
+          Merambat &amp; Refugia
+        </button>
+        <button data-category="Sayuran Daun & Bunga" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 transition-all">
+          Sayuran Daun &amp; Bunga
+        </button>
+      </div>
+    </div>
+
+    <!-- Grid Kartu Tanaman -->
+    <div id="plants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+      <!-- Kartu tanaman dirender via JavaScript -->
+    </div>
+
+    <!-- Empty State jika pencarian tidak ditemukan -->
+    <div id="empty-state" class="hidden text-center py-16 bg-white rounded-3xl border border-slate-200">
+      <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i class="fa-solid fa-seedling"></i>
+      </div>
+      <h3 class="text-xl font-bold text-slate-800">Tanaman tidak ditemukan</h3>
+      <p class="text-slate-500 mt-1 text-sm">Coba gunakan kata kunci lain atau klik tombol "Semua" untuk melihat seluruh komoditas.</p>
+      <button id="reset-filter-btn" class="mt-5 px-5 py-2.5 rounded-xl bg-emerald-700 text-white text-sm font-semibold hover:bg-emerald-800 transition-colors">
+        Reset Filter
+      </button>
+    </div>
+
+    <!-- Tombol Tampilkan Semua / Sembunyikan -->
+    <div id="toggle-container" class="mt-12 text-center">
+      <button id="toggle-show-btn" class="inline-flex items-center gap-2.5 bg-white hover:bg-emerald-50 text-emerald-900 border-2 border-emerald-700 font-bold px-7 py-3.5 rounded-2xl shadow-sm transition-all">
+        <span id="toggle-btn-text">Tampilkan Semua Tanaman (10)</span>
+        <i id="toggle-btn-icon" class="fa-solid fa-chevron-down text-emerald-600"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- 4. SOP SIKLUS PERAWATAN KEBUN -->
+  <section id="sop" class="py-16 sm:py-24 bg-emerald-950 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <span class="inline-block px-3.5 py-1.5 rounded-full bg-emerald-900 border border-emerald-700 text-amber-300 text-xs font-bold tracking-wider uppercase mb-3">
+            Standar Operasional Agribisnis
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            SOP Siklus Perawatan Kebun
+          </h2>
+          <p class="text-emerald-200 mt-2 text-base max-w-2xl">
+            Jadwal pemeliharaan terpadu dari aktivitas harian hingga fase generatif untuk menjaga kesehatan tanaman dan produktivitas hasil panen.
+          </p>
+        </div>
+        <div class="inline-flex items-center gap-2 text-sm text-amber-300 bg-emerald-900/70 px-4 py-2.5 rounded-xl border border-emerald-800">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Panduan Rutin Kebun Hortikultura</span>
+        </div>
+      </div>
+
+      <!-- 4 Cards Timeline SOP -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Step 1: Harian -->
+        <div class="bg-emerald-900/60 border border-emerald-700/60 rounded-3xl p-6 flex flex-col justify-between hover:border-amber-400/60 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <span class="w-11 h-11 rounded-2xl bg-emerald-500 text-emerald-950 font-extrabold text-lg flex items-center justify-center shadow-md">1</span>
+              <span class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 text-xs font-bold">Setiap Hari</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Harian (Pagi &amp; Sore)</h3>
+            <p class="text-sm text-emerald-100/85 leading-relaxed mb-4">
+              Penyiraman terukur pada pangkal akar (pukul 06.00–08.00 &amp; 16.00–17.30) serta inspeksi visual hama di balik daun.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-emerald-800/80 text-xs text-amber-300 font-medium flex items-center gap-2">
+            <i class="fa-solid fa-droplet"></i>
+            <span>Fokus: Kelembapan &amp; Deteksi Dini</span>
+          </div>
+        </div>
+
+        <!-- Step 2: Mingguan -->
+        <div class="bg-emerald-900/60 border border-emerald-700/60 rounded-3xl p-6 flex flex-col justify-between hover:border-amber-400/60 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <span class="w-11 h-11 rounded-2xl bg-amber-500 text-emerald-950 font-extrabold text-lg flex items-center justify-center shadow-md">2</span>
+              <span class="px-3 py-1 rounded-full bg-emerald-950 text-amber-300 text-xs font-bold">7 Hari Sekali</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Mingguan</h3>
+            <p class="text-sm text-emerald-100/85 leading-relaxed mb-4">
+              Pewiwilan (pemangkasan tunas air) pada tomat &amp; terong, sanitasi daun tua menguning, serta aplikasi pestisida nabati.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-emerald-800/80 text-xs text-amber-300 font-medium flex items-center gap-2">
+            <i class="fa-solid fa-scissors"></i>
+            <span>Fokus: Sanitasi &amp; Proteksi Hama</span>
+          </div>
+        </div>
+
+        <!-- Step 3: Dua Mingguan -->
+        <div class="bg-emerald-900/60 border border-emerald-700/60 rounded-3xl p-6 flex flex-col justify-between hover:border-amber-400/60 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <span class="w-11 h-11 rounded-2xl bg-emerald-500 text-emerald-950 font-extrabold text-lg flex items-center justify-center shadow-md">3</span>
+              <span class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 text-xs font-bold">14 Hari Sekali</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Dua Mingguan</h3>
+            <p class="text-sm text-emerald-100/85 leading-relaxed mb-4">
+              Pemberian pupuk susulan NPK berimbang, penggemburan media tanam, pembumbunan pangkal batang, dan pembersihan gulma.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-emerald-800/80 text-xs text-amber-300 font-medium flex items-center gap-2">
+            <i class="fa-solid fa-flask"></i>
+            <span>Fokus: Nutrisi Vegetatif &amp; Aerasi</span>
+          </div>
+        </div>
+
+        <!-- Step 4: Fase Generatif -->
+        <div class="bg-emerald-900/60 border border-emerald-700/60 rounded-3xl p-6 flex flex-col justify-between hover:border-amber-400/60 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <span class="w-11 h-11 rounded-2xl bg-amber-500 text-emerald-950 font-extrabold text-lg flex items-center justify-center shadow-md">4</span>
+              <span class="px-3 py-1 rounded-full bg-emerald-950 text-amber-300 text-xs font-bold">Berbunga &amp; Berbuah</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Fase Generatif</h3>
+            <p class="text-sm text-emerald-100/85 leading-relaxed mb-4">
+              Penambahan pupuk tinggi Kalium (KNO3) &amp; Kalsium cegah rontok bunga, pengikatan batang ke ajir/para-para, dan polinasi pagi.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-emerald-800/80 text-xs text-amber-300 font-medium flex items-center gap-2">
+            <i class="fa-solid fa-award"></i>
+            <span>Fokus: Kualitas &amp; Bobot Panen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. BAGIAN KONSULTASI WHATSAPP (CTA SECTION) -->
+  <section id="konsultasi" class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 rounded-3xl p-8 sm:p-12 lg:p-16 text-white shadow-2xl relative overflow-hidden border border-emerald-700">
+      <div class="absolute -right-16 -bottom-16 w-72 h-72 rounded-full bg-amber-400/15 blur-2xl pointer-events-none"></div>
+
+      <div class="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold uppercase tracking-wider">
+            <i class="fa-solid fa-headset"></i>
+            <span>Layanan Pendampingan Agribisnis</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+            Butuh Konsultasi Budidaya atau Diagnosa Hama Tanaman?
+          </h2>
+          <p class="text-emerald-100 text-base sm:text-lg leading-relaxed max-w-2xl">
+            Tim penyuluh <strong class="text-white">purbaya_edu</strong> siap membantu Anda seputar pemilihan benih, dosis pemupukan, penanganan virus kuning cabai, hingga manajemen kebun skala pekarangan maupun komersial.
+          </p>
+
+          <!-- Informasi Alamat -->
+          <div class="pt-2 flex flex-wrap items-center gap-4">
+            <div class="bg-emerald-950/80 border border-emerald-600/60 px-5 py-3 rounded-2xl flex items-center gap-3">
+              <i class="fa-solid fa-location-dot text-2xl text-emerald-400"></i>
+              <div>
+                <p class="text-[11px] uppercase tracking-wider text-emerald-300 font-semibold">Alamat Purbaya Edu</p>
+                <p id="address-text" class="text-base sm:text-lg font-extrabold text-white tracking-wide">Alamat belum dicantumkan</p>
+              </div>
+            </div>
+
+            <button id="copy-address-btn" class="px-4 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-semibold flex items-center gap-2 transition-all">
+              <i class="fa-regular fa-copy"></i>
+              <span>Salin Alamat</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Direct alamat CTA Card -->
+        <div class="lg:col-span-4 flex flex-col items-stretch sm:items-center lg:items-end justify-center">
+          <div class="bg-white text-slate-800 p-6 rounded-3xl shadow-xl w-full max-w-sm border border-emerald-100">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-900">Purbaya Edu</h3>
+                <p class="text-xs text-emerald-600 font-semibold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Online • Respon Cepat
+                </p>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 mb-5 leading-relaxed">
+              Silakan lihat informasi alamat Purbaya Edu untuk mengetahui lokasi layanan dan pendampingan.
+            </p>
+            <a
+              href="#konsultasi"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full inline-flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-4 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all text-sm sm:text-base"
+            >
+              <i class="fa-solid fa-location-dot text-xl"></i>
+              <span>Lihat Informasi Alamat</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-300 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-slate-800">
+        <div>
+          <div class="flex items-center gap-2.5 mb-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white">
+              <i class="fa-solid fa-seedling text-amber-300"></i>
+            </div>
+            <span class="text-xl font-extrabold text-white">purbaya<span class="text-emerald-400">_edu</span></span>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Platform edukasi agronomi, budidaya hortikultura, dan manajemen kebun modern berbasis dokumentasi lapangan terverifikasi.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-3">Navigasi Cepat</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#beranda" class="hover:text-emerald-400 transition-colors">Beranda</a></li>
+            <li><a href="#katalog" class="hover:text-emerald-400 transition-colors">Katalog 10 Tanaman</a></li>
+            <li><a href="#sop" class="hover:text-emerald-400 transition-colors">SOP Siklus Perawatan</a></li>
+            <li><a href="#konsultasi" class="hover:text-emerald-400 transition-colors">Informasi Alamat</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-3">Kontak Informasi</h4>
+          <p class="text-sm text-slate-400 mb-2">Untuk informasi lebih lanjut &amp; pendampingan kebun:</p>
+          <a
+            href="#konsultasi"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 font-bold text-base"
+          >
+            <i class="fa-solid fa-location-dot text-lg"></i>
+            <span>Alamat belum dicantumkan</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+        <p>&copy; 2026 purbaya_edu — Platform Edukasi &amp; Agronomi Kebun. Seluruh hak cipta dilindungi.</p>
+        <p>Dibuat untuk kemajuan Agribisnis &amp; Smart Farming Indonesia.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL DETAIL TANAMAN -->
+  <div id="plant-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Modal Panel -->
+    <div class="flex min-h-full items-center justify-center p-4 sm:p-6">
+      <div class="relative w-full max-w-3xl rounded-3xl bg-white shadow-2xl overflow-hidden border border-emerald-100 transform transition-all">
+        <!-- Modal Top Image & Close Button -->
+        <div class="relative h-60 sm:h-72 bg-emerald-950">
+          <img id="modal-img" src="" alt="" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/40 to-transparent"></div>
+          <button id="close-modal-btn" aria-label="Tutup Modal" class="absolute top-4 right-4 w-11 h-11 rounded-2xl bg-black/50 hover:bg-black/75 text-white flex items-center justify-center backdrop-blur-md transition-colors">
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
+          <div class="absolute bottom-5 left-6 right-6 text-white">
+            <span id="modal-category" class="inline-block px-3 py-1 rounded-lg bg-amber-500 text-emerald-950 text-xs font-bold mb-2">
+              Kategori
+            </span>
+            <h3 id="modal-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight">Nama Tanaman</h3>
+            <p id="modal-scientific" class="text-sm sm:text-base italic text-emerald-200 mt-0.5">Nama Ilmiah</p>
+          </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-6 sm:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
+          <!-- Klasifikasi Botani Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div class="bg-emerald-50/80 border border-emerald-100 p-4 rounded-2xl">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Famili Botani</p>
+              <p id="modal-family" class="text-sm sm:text-base font-bold text-slate-900 mt-1">-</p>
+            </div>
+            <div class="bg-emerald-50/80 border border-emerald-100 p-4 rounded-2xl">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Media Tanam</p>
+              <p id="modal-media" class="text-sm sm:text-base font-bold text-slate-900 mt-1">-</p>
+            </div>
+            <div class="bg-amber-50/80 border border-amber-200/70 p-4 rounded-2xl">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-amber-800">Estimasi Panen</p>
+              <p id="modal-harvest" class="text-sm sm:text-base font-extrabold text-amber-700 mt-1">-</p>
+            </div>
+          </div>
+
+          <!-- Pembahasan Kondisi Lapangan -->
+          <div>
+            <h4 class="text-base font-extrabold text-emerald-950 flex items-center gap-2 mb-2">
+              <i class="fa-solid fa-magnifying-glass text-amber-500"></i>
+              <span>Pembahasan Kondisi Lapangan</span>
+            </h4>
+            <p id="modal-condition" class="text-sm sm:text-base text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+              Deskripsi kondisi lapangan.
+            </p>
+          </div>
+
+          <!-- Catatan Koreksi Agronomi (Opsional jika ada) -->
+          <div id="modal-correction-box" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4">
+            <h4 class="text-sm font-extrabold text-amber-900 flex items-center gap-2 mb-1">
+              <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+              <span>Catatan Koreksi Agronomi</span>
+            </h4>
+            <p id="modal-correction" class="text-xs sm:text-sm text-amber-800 leading-relaxed"></p>
+          </div>
+
+          <!-- Langkah-Langkah Perawatan Utama -->
+          <div>
+            <h4 class="text-base font-extrabold text-emerald-950 flex items-center gap-2 mb-3">
+              <i class="fa-solid fa-hand-holding-droplet text-emerald-600"></i>
+              <span>Langkah-Langkah Perawatan Utama</span>
+            </h4>
+            <div id="modal-care-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <!-- Diisi dinamis oleh JS -->
+            </div>
+          </div>
+
+          <!-- Footer Action di Modal -->
+          <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <a
+              id="modal-address-link"
+              href="#konsultasi"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold px-5 py-3 rounded-xl transition-colors"
+            >
+              <i class="fa-solid fa-location-dot text-lg text-amber-300"></i>
+              <span>Informasi Alamat</span>
+            </a>
+            <button id="close-modal-footer-btn" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors">
+              Tutup Detail
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Database Lengkap 10 Tanaman Hasil Review & Koreksi PPT
+    const plantsData = [
+      {
+        id: 1,
+        name: "Terong Ungu",
+        scientific: "Solanum melongena",
+        category: "Buah & Sayur Solanaceae",
+        family: "Solanaceae",
+        media: "Polybag & Ajir",
+        harvest: "65–80 HST",
+        image: "https://i.ibb.co/Nqy2q8G/315784.jpg",
+        fallback: "https://placehold.co/800x600/064e3b/ffffff?text=Terong+Ungu",
+        condition: "Buah ungu mengkilap tumbuh sehat di media polybag dengan penopang ajir bambu/kayu agar batang tidak patah menahan beban buah.",
+        correction: "Pada tabel ringkasan awal digabung dengan Tomat; dipisahkan secara spesifik karena kebutuhan pemangkasan cabang Y dan volume polybag minimal 35–40 cm.",
+        care: [
+          { label: "Penyiraman", desc: "Rutin pagi dan sore hari untuk menjaga kelembapan media polybag agar tidak cepat kering." },
+          { label: "Pemangkasan", desc: "Buang tunas air yang tumbuh di bawah cabang Y utama agar nutrisi fokus ke pembesaran buah." },
+          { label: "Pemupukan", desc: "Aplikasi pupuk NPK berimbang (16-16-16) dan tambahan Kalsium mencegah busuk ujung buah." },
+          { label: "Penopang & Hama", desc: "Ikat batang kuat ke ajir bambu serta pantau kumbang daun (Epilachna) dan kutu kebul." }
+        ]
+      },
+      {
+        id: 2,
+        name: "Jeruk Limau / Jeruk Nipis",
+        scientific: "Citrus amblycarpa / Citrus sp.",
+        category: "Buah Tahunan",
+        family: "Rutaceae",
+        media: "Lahan Terbuka / Pot Besar",
+        harvest: "8–12 Bulan",
+        image: "https://i.ibb.co/LdpZ2cCq/316037.jpg",
+        fallback: "https://placehold.co/800x600/047857/ffffff?text=Jeruk+Limau",
+        condition: "Tanaman tahunan sedang berada pada fase generatif pembentukan bakal buah hijau dengan tajuk daun yang rimbun dan sehat.",
+        correction: "Memerlukan manajemen pemangkasan bentuk (1-3-9) agar sinar matahari menembus bagian dalam tajuk dan mencegah kelembapan berlebih.",
+        care: [
+          { label: "Pencahayaan", desc: "Kebutuhan sinar matahari penuh minimal 6–8 jam sehari untuk merangsang pembungaan maksimal." },
+          { label: "Pemangkasan", desc: "Pangkas ranting sakit, kering, atau bersilangan untuk menjaga sirkulasi udara tajuk." },
+          { label: "Pemupukan", desc: "Berikan pupuk tinggi Kalium serta unsur mikro Boron & Magnesium agar bakal buah tidak rontok." },
+          { label: "Pengendalian Hama", desc: "Semprot pestisida nabati (mimba/bawang putih) untuk mengatasi kutu daun dan ulat peliang daun." }
+        ]
+      },
+      {
+        id: 3,
+        name: "Cabai Rawit Merah / Gantung",
+        scientific: "Capsicum frutescens",
+        category: "Buah & Sayur Solanaceae",
+        family: "Solanaceae",
+        media: "Bedengan Mulsa Plastik Perak & Ajir",
+        harvest: "75–90 HST",
+        image: "https://i.ibb.co/p6TD1wF7/316036.jpg",
+        fallback: "https://placehold.co/800x600/064e3b/ffffff?text=Cabai+Rawit+Merah",
+        condition: "Buah menggantung berwarna hijau muda hingga merah cerah pada bedengan yang ditutup mulsa plastik perak dan ditopang ajir.",
+        correction: "Dibedakan dari varietas Cabai Rawit Putih Tegak (Foto 10) karena sistem budidaya menggunakan mulsa plastik perak untuk pengendalian iklim mikro tanah.",
+        care: [
+          { label: "Manajemen Mulsa", desc: "Mulsa plastik perak memantulkan cahaya ke bawah daun guna mengusir hama thrips dan menekan gulma." },
+          { label: "Pemupukan", desc: "Berikan pupuk Kalsium dan KNO3 secara berkala untuk mencegah kerontokan bunga dan penyakit antraknosa." },
+          { label: "Drainase & Siram", desc: "Pastikan drainase bedengan optimal agar tidak tergenang air hujan pemicu layu fusarium." },
+          { label: "Pemangkasan", desc: "Rempel daun tua dan tunas air di bawah cabang utama untuk sirkulasi udara pangkal batang." }
+        ]
+      },
+      {
+        id: 4,
+        name: "Tomat",
+        scientific: "Solanum lycopersicum",
+        category: "Buah & Sayur Solanaceae",
+        family: "Solanaceae",
+        media: "Polybag / Lahan & Ajir",
+        harvest: "65–80 HST",
+        image: "https://i.ibb.co/S7dc4DFj/316034.jpg",
+        fallback: "https://placehold.co/800x600/047857/ffffff?text=Tanaman+Tomat",
+        condition: "Dompolan buah memasuki fase matang hijau kekuningan dengan sedikit gejala bercak daun tua di bagian bawah tajuk.",
+        correction: "Bercak cokelat pada daun bawah merupakan indikator awal infeksi jamur (Alternaria/Phytophthora) yang wajib segera disanitasi.",
+        care: [
+          { label: "Penyiraman Akar", desc: "Siram langsung ke pangkal akar tanpa membasahi daun untuk menekan perkembangan spora jamur." },
+          { label: "Pewiwilan", desc: "Pangkas tunas ketiak daun (wiwil) secara rutin agar energi tanaman fokus pada pembesaran dompolan buah." },
+          { label: "Sanitasi Daun", desc: "Potong dan musnahkan daun bawah yang berbercak cokelat atau menguning untuk mencegah penularan jamur." },
+          { label: "Pengikatan Ajir", desc: "Ikat batang utama ke ajir secara berkala mengikuti pertumbuhan tinggi tanaman." }
+        ]
+      },
+      {
+        id: 5,
+        name: "Jagung Manis",
+        scientific: "Zea mays saccharata",
+        category: "Pangan & Biji-bijian",
+        family: "Poaceae",
+        media: "Bedengan Mulsa",
+        harvest: "65–75 HST",
+        image: "https://i.ibb.co/L4hf3SK/315781.jpg",
+        fallback: "https://placehold.co/800x600/064e3b/ffffff?text=Jagung+Manis",
+        condition: "Tongkol jagung terisi penuh dan padat dengan rambut jagung (silk) mulai berwarna cokelat mengering tanda mendekati waktu panen.",
+        correction: "Pada fase pengisian biji hingga panen, kecukupan air dan kalium sangat menentukan tingkat kemanisan (Brix) biji jagung.",
+        care: [
+          { label: "Irigasi Kritis", desc: "Jaga kecukupan air tanah terutama saat fase pembungaan dan pengisian biji agar tongkol terisi penuh." },
+          { label: "Pemupukan Susulan", desc: "Berikan pupuk susulan kaya Nitrogen dan Kalium pada umur 21 dan 35 HST." },
+          { label: "Pembumbunan", desc: "Timbun tanah di sekitar pangkal batang untuk memperkuat akar tunjang agar tidak mudah rebah tertiup angin." },
+          { label: "Kontrol Ulat", desc: "Pantau pucuk daun dan ujung tongkol dari serangan ulat grayak (Spodoptera frugiperda)." }
+        ]
+      },
+      {
+        id: 6,
+        name: "Bunga Matahari",
+        scientific: "Helianthus annuus",
+        category: "Merambat & Refugia",
+        family: "Asteraceae",
+        media: "Lahan Terbuka",
+        harvest: "70–85 HST",
+        image: "https://i.ibb.co/S4SjLSVn/316033.jpg",
+        fallback: "https://placehold.co/800x600/d97706/ffffff?text=Bunga+Matahari",
+        condition: "Bunga mekar sempurna dengan warna kuning cerah dan aktivitas lebah penyerbuk aktif di permukaan cakram bunga.",
+        correction: "Koreksi klasifikasi: Bunga Matahari masuk famili Asteraceae dan ditanam di lahan terbuka sebagai tanaman refugia (bukan tanaman rambat para-para).",
+        care: [
+          { label: "Fungsi Refugia", desc: "Pertahankan sebagai tanaman refugia di tepi kebun untuk menarik lebah penyerbuk dan musuh alami hama." },
+          { label: "Pencahayaan", desc: "Membutuhkan sinar matahari penuh sepanjang hari agar batang kokoh dan kepala bunga mekar optimal." },
+          { label: "Penyiraman", desc: "Penyiraman sedang secara teratur; hindari tanah tergenang yang dapat menyebabkan busuk akar." },
+          { label: "Penopang Batang", desc: "Pasang ajir bambu jika batang tumbuh terlalu tinggi dan kepala bunga mulai memberat." }
+        ]
+      },
+      {
+        id: 7,
+        name: "Labu Madu / Butternut Squash",
+        scientific: "Cucurbita moschata",
+        category: "Merambat & Refugia",
+        family: "Cucurbitaceae",
+        media: "Para-para Bambu & Lahan",
+        harvest: "80–95 HST",
+        image: "https://i.ibb.co/V0tvq6gp/316032.jpg",
+        fallback: "https://placehold.co/800x600/047857/ffffff?text=Labu+Madu",
+        condition: "Buah labu madu menggantung sehat pada konstruksi para-para bambu dengan corak kulit hijau muda belang sebelum matang krem.",
+        correction: "Koreksi media tanam: Menggunakan konstruksi para-para bambu gantung sehingga buah terhindar dari kelembapan tanah dan bentuknya simetris.",
+        care: [
+          { label: "Para-para Bambu", desc: "Wajib menggunakan para-para bambu yang kokoh untuk menopang sulur dan mencegah buah busuk menyentuh tanah." },
+          { label: "Polinasi Manual", desc: "Lakukan penyerbukan manual dengan menempelkan serbuk sari bunga jantan ke putik bunga betina pukul 06.00–09.00 pagi." },
+          { label: "Pemupukan Buah", desc: "Berikan pupuk tinggi Kalium (K) dan Fosfor (P) saat fase pembesaran buah untuk meningkatkan rasa manis." },
+          { label: "Pemangkasan Sulur", desc: "Pangkas sulur cabang yang tidak produktif agar sirkulasi udara di bawah para-para tetap lancar." }
+        ]
+      },
+      {
+        id: 8,
+        name: "Kangkung Darat",
+        scientific: "Ipomoea aquatica",
+        category: "Sayuran Daun & Bunga",
+        family: "Convolvulaceae",
+        media: "Bedengan Lahan Terbuka",
+        harvest: "25–30 HST",
+        image: "https://i.ibb.co/GfC0YX2y/316031.jpg",
+        fallback: "https://placehold.co/800x600/064e3b/ffffff?text=Kangkung+Darat",
+        condition: "Hamparan daun hijau segar, lebar, dan tumbuh rapat di bedengan lahan terbuka serta sudah memasuki usia siap panen.",
+        correction: "Estimasi panen khusus Kangkung Darat adalah 25–30 HST (lebih cepat dibanding Kembang Kol yang membutuhkan 55–65 HST).",
+        care: [
+          { label: "Penyiraman Intensif", desc: "Siram rutin 2 kali sehari (pagi dan sore) karena sayuran daun membutuhkan pasokan air konstan." },
+          { label: "Pemupukan Nitrogen", desc: "Berikan pupuk kaya Nitrogen (Urea atau Pupuk Organik Cair) agar daun lebar dan batang tetap empuk renyah." },
+          { label: "Kelembapan Tanah", desc: "Jaga kelembapan tanah bedengan tetap gembur tanpa genangan air berlebih." },
+          { label: "Teknik Panen", desc: "Panen umur 25–30 HST dengan cara dicabut hingga akar atau dipotong 3–5 cm dari pangkal untuk panen ulang." }
+        ]
+      },
+      {
+        id: 9,
+        name: "Kembang Kol / Bunga Kol",
+        scientific: "Brassica oleracea var. botrytis",
+        category: "Sayuran Daun & Bunga",
+        family: "Brassicaceae",
+        media: "Polybag",
+        harvest: "55–65 HST",
+        image: "https://i.ibb.co/1fhycwJQ/315736.jpg",
+        fallback: "https://placehold.co/800x600/047857/ffffff?text=Kembang+Kol",
+        condition: "Krop bunga putih kekuningan mulai terbentuk padat di tengah daun hijau kebiruan dalam polybag, disertai sedikit daun tua bawah menguning.",
+        correction: "Warna krop yang agak kekuningan di lapangan menandakan perlunya teknik blanching (penutupan krop dari sinar matahari langsung).",
+        care: [
+          { label: "Teknik Blanching", desc: "Ikat atau lipat daun-daun tua di sekitar krop untuk menutupi bunga agar warnanya tetap putih bersih dan tidak terbakar matahari." },
+          { label: "Sanitasi Daun", desc: "Buang daun paling bawah yang mulai menguning agar tidak menjadi sarang kelembapan dan jamur." },
+          { label: "Kontrol Ulat Krop", desc: "Kendalikan ulat krop (Crocidolomia pavonana) secara manual atau menggunakan pestisida nabati/biologi (Bt)." },
+          { label: "Pemupukan", desc: "Berikan pupuk NPK ditambah unsur hara mikro Boron dan Molibdenum agar krop padat dan tidak berongga." }
+        ]
+      },
+      {
+        id: 10,
+        name: "Cabai Rawit Putih / Tegak",
+        scientific: "Capsicum frutescens",
+        category: "Buah & Sayur Solanaceae",
+        family: "Solanaceae",
+        media: "Lahan Terbuka",
+        harvest: "75–90 HST",
+        image: "https://i.ibb.co/zHh8VMdQ/316030.jpg",
+        fallback: "https://placehold.co/800x600/064e3b/ffffff?text=Cabai+Rawit+Putih",
+        condition: "Buah tumbuh tegak ke atas berwarna putih kekuningan hingga oranye kemerahan, namun terlihat gejala bercak klorosis/mosaik kuning pada daun.",
+        correction: "Gejala mosaik kuning pada foto lapangan merupakan indikasi serangan Virus Gemini yang ditularkan vektor kutu kebul (Bemisia tabaci).",
+        care: [
+          { label: "Kendali Vektor", desc: "Pasang perangkap likat kuning (yellow trap) dan semprot insektisida nabati atau bahan aktif abamektin untuk membasmi kutu kebul & thrips." },
+          { label: "Isolasi Tanaman", desc: "Cabut dan musnahkan tanaman muda yang terinfeksi virus gemini parah agar tidak menular ke seluruh kebun." },
+          { label: "Nutrisi Pemulihan", desc: "Semprot pupuk daun mengandung unsur mikro (Zn, Fe, Mg) dan asam amino untuk menjaga produktivitas buah yang sudah terbentuk." },
+          { label: "Sanitasi Gulma", desc: "Bersihkan gulma berdaun lebar di sekitar lahan terbuka yang sering menjadi inang alternatif kutu kebul." }
+        ]
+      }
+    ];
+
+    // State Management
+    let currentCategory = "Semua";
+    let searchQuery = "";
+    let showAllPlants = false;
+    const INITIAL_DISPLAY_COUNT = 6;
+
+    // DOM Elements
+    const plantsGrid = document.getElementById("plants-grid");
+    const emptyState = document.getElementById("empty-state");
+    const toggleContainer = document.getElementById("toggle-container");
+    const toggleShowBtn = document.getElementById("toggle-show-btn");
+    const toggleBtnText = document.getElementById("toggle-btn-text");
+    const toggleBtnIcon = document.getElementById("toggle-btn-icon");
+    const searchInput = document.getElementById("search-input");
+    const clearSearchBtn = document.getElementById("clear-search");
+    const resetFilterBtn = document.getElementById("reset-filter-btn");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+
+    // Modal Elements
+    const plantModal = document.getElementById("plant-modal");
+    const modalBackdrop = document.getElementById("modal-backdrop");
+    const closeModalBtn = document.getElementById("close-modal-btn");
+    const closeModalFooterBtn = document.getElementById("close-modal-footer-btn");
+
+    // Toast Helper
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toast-message");
+      toastMsg.textContent = message;
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        toast.classList.remove("translate-y-4", "opacity-0");
+      }, 10);
+      setTimeout(() => {
+        toast.classList.add("translate-y-4", "opacity-0");
+        setTimeout(() => toast.classList.add("hidden"), 300);
+      }, 3000);
+    }
+
+    // Render Plant Cards
+    function renderPlants() {
+      const filtered = plantsData.filter((plant) => {
+        const matchCategory = currentCategory === "Semua" || plant.category === currentCategory;
+        const query = searchQuery.toLowerCase().trim();
+        const matchSearch =
+          plant.name.toLowerCase().includes(query) ||
+          plant.scientific.toLowerCase().includes(query) ||
+          plant.family.toLowerCase().includes(query);
+        return matchCategory && matchSearch;
+      });
+
+      plantsGrid.innerHTML = "";
+
+      if (filtered.length === 0) {
+        plantsGrid.classList.add("hidden");
+        emptyState.classList.remove("hidden");
+        toggleContainer.classList.add("hidden");
+        return;
+      }
+
+      plantsGrid.classList.remove("hidden");
+      emptyState.classList.add("hidden");
+
+      // Tentukan jumlah kartu yang ditampilkan
+      const isDefaultView = currentCategory === "Semua" && searchQuery.trim() === "";
+      const visiblePlants = isDefaultView && !showAllPlants
+        ? filtered.slice(0, INITIAL_DISPLAY_COUNT)
+        : filtered;
+
+      // Atur visibilitas tombol "Tampilkan Semua Tanaman (10)" / "Sembunyikan"
+      if (isDefaultView && filtered.length > INITIAL_DISPLAY_COUNT) {
+        toggleContainer.classList.remove("hidden");
+        if (showAllPlants) {
+          toggleBtnText.textContent = "Sembunyikan Sebagian Tanaman";
+          toggleBtnIcon.className = "fa-solid fa-chevron-up text-emerald-600";
+        } else {
+          toggleBtnText.textContent = `Tampilkan Semua Tanaman (${filtered.length})`;
+          toggleBtnIcon.className = "fa-solid fa-chevron-down text-emerald-600";
+        }
+      } else {
+        toggleContainer.classList.add("hidden");
+      }
+
+      visiblePlants.forEach((plant) => {
+        const card = document.createElement("article");
+        card.className =
+          "group bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 overflow-hidden flex flex-col justify-between";
+
+        card.innerHTML = `
+          <div>
+            <!-- Foto Tanaman -->
+            <div class="relative h-52 bg-emerald-950 overflow-hidden">
+              <img
+                src="${plant.image}"
+                onerror="this.src='${plant.fallback}'"
+                alt="${plant.name}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-xl bg-emerald-950/85 backdrop-blur-sm text-emerald-200 text-xs font-semibold border border-emerald-700/60">
+                #${plant.id} • ${plant.family}
+              </span>
+              <span class="absolute bottom-3.5 right-3.5 px-3 py-1 rounded-xl bg-amber-500 text-emerald-950 text-xs font-extrabold shadow-sm">
+                <i class="fa-regular fa-clock mr-1"></i>${plant.harvest}
+              </span>
+            </div>
+
+            <!-- Konten Kartu -->
+            <div class="p-6">
+              <p class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">${plant.category}</p>
+              <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-emerald-800 transition-colors">
+                ${plant.name}
+              </h3>
+              <p class="text-sm italic text-slate-500 mb-4">${plant.scientific}</p>
+
+              <!-- Info Ringkas Media & Panen -->
+              <div class="space-y-2 pt-3 border-t border-slate-100 text-xs sm:text-sm">
+                <div class="flex items-center justify-between text-slate-600">
+                  <span class="flex items-center gap-1.5 font-medium text-slate-500">
+                    <i class="fa-solid fa-layer-group text-emerald-600"></i> Media Tanam:
+                  </span>
+                  <span class="font-semibold text-slate-800 text-right">${plant.media}</span>
+                </div>
+                <div class="flex items-center justify-between text-slate-600">
+                  <span class="flex items-center gap-1.5 font-medium text-slate-500">
+                    <i class="fa-solid fa-calendar-check text-amber-500"></i> Estimasi Panen:
+                  </span>
+                  <span class="font-bold text-emerald-700">${plant.harvest}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tombol Lihat Detail & Perawatan -->
+          <div class="px-6 pb-6 pt-2">
+            <button
+              onclick="openPlantModal(${plant.id})"
+              class="w-full py-3.5 px-4 rounded-2xl bg-emerald-50 hover:bg-emerald-700 text-emerald-900 hover:text-white font-bold text-sm flex items-center justify-center gap-2 transition-all border border-emerald-200 hover:border-emerald-700"
+            >
+              <span>Lihat Detail &amp; Perawatan</span>
+              <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+          </div>
+        `;
+
+        plantsGrid.appendChild(card);
+      });
+    }
+
+    // Open Modal Function
+    window.openPlantModal = function (plantId) {
+      const plant = plantsData.find((p) => p.id === plantId);
+      if (!plant) return;
+
+      document.getElementById("modal-img").src = plant.image;
+      document.getElementById("modal-img").onerror = function () {
+        this.src = plant.fallback;
+      };
+      document.getElementById("modal-img").alt = plant.name;
+      document.getElementById("modal-category").textContent = plant.category;
+      document.getElementById("modal-title").textContent = plant.name;
+      document.getElementById("modal-scientific").textContent = plant.scientific;
+      document.getElementById("modal-family").textContent = plant.family;
+      document.getElementById("modal-media").textContent = plant.media;
+      document.getElementById("modal-harvest").textContent = plant.harvest;
+      document.getElementById("modal-condition").textContent = plant.condition;
+
+      // Catatan Koreksi Agronomi
+      const correctionBox = document.getElementById("modal-correction-box");
+      if (plant.correction) {
+        correctionBox.classList.remove("hidden");
+        document.getElementById("modal-correction").textContent = plant.correction;
+      } else {
+        correctionBox.classList.add("hidden");
+      }
+
+      // Render Langkah Perawatan
+      const careList = document.getElementById("modal-care-list");
+      careList.innerHTML = "";
+      plant.care.forEach((step) => {
+        const item = document.createElement("div");
+        item.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm";
+        item.innerHTML = `
+          <p class="text-xs font-extrabold uppercase tracking-wider text-emerald-700 mb-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-amber-500"></i>
+            <span>${step.label}</span>
+          </p>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${step.desc}</p>
+        `;
+        careList.appendChild(item);
+      });
+
+      // Update Link alamat Spesifik Tanaman
+      const waText = encodeURIComponent(
+        `Halo Purbaya Edu, saya ingin bertanya lebih lanjut tentang budidaya dan perawatan tanaman ${plant.name} (${plant.scientific}).`
+      );
+      document.getElementById("modal-address-link").href = `#konsultasi`;
+
+      plantModal.classList.remove("hidden");
+      document.body.classList.add("overflow-hidden");
+    };
+
+    // Close Modal Function
+    function closePlantModal() {
+      plantModal.classList.add("hidden");
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    closeModalBtn.addEventListener("click", closePlantModal);
+    closeModalFooterBtn.addEventListener("click", closePlantModal);
+    modalBackdrop.addEventListener("click", closePlantModal);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !plantModal.classList.contains("hidden")) {
+        closePlantModal();
+      }
+    });
+
+    // Filter Category Event Listeners
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach((b) => {
+          b.classList.remove("bg-emerald-800", "text-white", "shadow-sm");
+          b.classList.add("bg-slate-100", "text-slate-700");
+        });
+        btn.classList.remove("bg-slate-100", "text-slate-700");
+        btn.classList.add("bg-emerald-800", "text-white", "shadow-sm");
+
+        currentCategory = btn.getAttribute("data-category");
+        renderPlants();
+      });
+    });
+
+    // Search Input Event Listeners
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      if (searchQuery.trim().length > 0) {
+        clearSearchBtn.classList.remove("hidden");
+      } else {
+        clearSearchBtn.classList.add("hidden");
+      }
+      renderPlants();
+    });
+
+    clearSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      searchQuery = "";
+      clearSearchBtn.classList.add("hidden");
+      renderPlants();
+    });
+
+    resetFilterBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      searchQuery = "";
+      clearSearchBtn.classList.add("hidden");
+      currentCategory = "Semua";
+      filterButtons.forEach((b, idx) => {
+        if (idx === 0) {
+          b.classList.add("bg-emerald-800", "text-white", "shadow-sm");
+          b.classList.remove("bg-slate-100", "text-slate-700");
+        } else {
+          b.classList.remove("bg-emerald-800", "text-white", "shadow-sm");
+          b.classList.add("bg-slate-100", "text-slate-700");
+        }
+      });
+      renderPlants();
+    });
+
+    // Toggle Show All / Collapse Plants
+    toggleShowBtn.addEventListener("click", () => {
+      showAllPlants = !showAllPlants;
+      renderPlants();
+      if (!showAllPlants) {
+        document.getElementById("katalog").scrollIntoView({ behavior: "smooth" });
+      }
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    mobileMenuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+    document.querySelectorAll(".mobile-link").forEach((link) => {
+      link.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+    });
+
+    // Salin alamat: alamat asli dapat diisi pada teks di bagian konsultasi.
+    const copyAddressButton = document.getElementById("copy-address-btn");
+    if (copyAddressButton) {
+      copyAddressButton.addEventListener("click", () => {
+        const address = "Alamat belum dicantumkan";
+        const tempInput = document.createElement("input");
+        tempInput.value = address;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try { document.execCommand("copy"); showToast("Teks alamat berhasil disalin."); }
+        catch (err) { showToast("Alamat: belum dicantumkan."); }
+        document.body.removeChild(tempInput);
+      });
+    }
+
+    // Inisialisasi Render Awal
+    document.addEventListener("DOMContentLoaded", () => {
+      renderPlants();
+    });
+  </script>
+</body>
+</html>
